@@ -1,4 +1,4 @@
-import { icons, images} from '../constants'
+import { icons, images } from '../constants'
 
 export const initialCurrentLocation = {
     streetName: "Garden City Mall",
@@ -9,6 +9,11 @@ export const initialCurrentLocation = {
 }
 
 export const categoryData = [
+    {
+        id: 0,
+        name: "All",
+        icon: icons.cutlery,
+    },
     {
         id: 1,
         name: "Rice",
