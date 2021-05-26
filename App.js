@@ -5,11 +5,15 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
 import Tabs from './navigation/tabs';
-import { 
+import {
   Home,
+  Login,
   OrderDelivery,
   Restaurants
 } from './screens'
+import { useEffect } from 'react';
+
+
 
 const Stack = createStackNavigator();
 
@@ -25,19 +29,17 @@ const fetchFonts = () => {
 const App = () => {
 
   const [fontsLoaded, setFontsLoaded] = React.useState(false);
-  
-  if(!fontsLoaded){
-    return <AppLoading startAsync={fetchFonts} onFinish={()=>setFontsLoaded(true)}/>
-  }
-  
+  const [user, setUser] = React.useState();
 
+  if (!fontsLoaded) {
+    return <AppLoading startAsync={fetchFonts} onFinish={() => setFontsLoaded(true)} />
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator
-          initialRouteName='Home'
-          screenOptions={{
-            headerShown: false,
-          }}>
+        screenOptions={{
+          headerShown: false,
+        }}>
         <Stack.Screen name='Home' component={Tabs} />
         <Stack.Screen name='OrderDelivery' component={OrderDelivery} />
         <Stack.Screen name='Restaurants' component={Restaurants} />
