@@ -28,7 +28,7 @@ const Home = ({ navigation }) => {
     const [currentLocation, setCurrentLocation] = useState(initialCurrentLocation)
 
     function onSelectCategory(category) {
-        let restaurantsList = category.id === 0 ? restaurantData : restaurantData.filter(a => a.categories.includes(category.id))
+        let restaurantsList = category.id === 'all' ? restaurantData : restaurantData.filter(a => a.categories.includes(category.id))
         setRestaurants(restaurantsList);
         setSelectedCategory(category);
     }
