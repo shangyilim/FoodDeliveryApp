@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
@@ -7,6 +7,7 @@ import {
     FlatList,
     Platform,
     Text
+
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -16,8 +17,8 @@ import {
     categoryData
 } from '../data/restaurantData'
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import Restaurant from '../components/Restaurant';
 
 const Home = ({ navigation }) => {
 
@@ -32,13 +33,7 @@ const Home = ({ navigation }) => {
         setSelectedCategory(category);
     }
 
-    function getCategoryNameById(id) {
-        let category = categories.filter(a => a.id == id);
-        if (category.length > 0) {
-            return category[0].name
-        }
-        return ""
-    }
+
 
     function renderHeader() {
         return (
@@ -155,102 +150,15 @@ const Home = ({ navigation }) => {
     function renderRestaurantList() {
 
         const renderItem = ({ item }) => {
-            return (
-                <TouchableOpacity
-                    style={{ padding: SIZES.padding * 2 }}
-                    onPress={() => navigation.navigate('Restaurants', {
-                        item,
-                        currentLocation
-                    })}
-                >
-                    <View>
-                        <Image
-                            source={item.photo}
-                            resizeMode="cover"
-                            style={{
-                                width: "100%",
-                                height: 150,
-                                borderRadius: SIZES.radius
-                            }}
-                        />
 
-                        <View style={{
-                            position: "absolute",
-                            bottom: 0,
-                            height: 50,
-                            width: SIZES.width * 0.3,
-                            backgroundColor: COLORS.white,
-                            borderTopRightRadius: SIZES.radius,
-                            borderBottomLeftRadius: SIZES.radius,
-                            alignItems: "center",
-                            justifyContent: 'center',
-                            ...styles.shadow
-                        }}>
-                            <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
-                        </View>
-                    </View>
-
-                    {/* Restaurant Info */}
-                    <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: SIZES.padding,
-                    }}>
-                        <Image
-                            source={icons.star}
-                            resizeMode="contain"
-                            style={{
-                                height: 20,
-                                width: 20,
-                                tintColor: COLORS.primary,
-                                marginRight: 10
-                            }}
-
-                        />
-                        <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
-                        {/* Categories */}
-                        <View style={{
-                            flexDirection: 'row',
-                            marginLeft: 10,
-                        }}>
-                            {
-                                item.categories.map((categoryId) => {
-                                    return (
-                                        <View
-                                            key={categoryId}
-                                            style={{
-                                                flexDirection: 'row',
-
-                                            }}
-                                        >
-                                            <Text style={{ ...FONTS.body3, }}>{getCategoryNameById(categoryId)}</Text>
-                                            <Text style={{ ...FONTS.h3, color: COLORS.darkgray }}> . </Text>
+            return <Restaurant
+                item={item}
+                onPress={() => navigation.navigate('Restaurants', {
+                    item,
+                    currentLocation
+                })} />
 
 
-                                        </View>
-                                    )
-                                })
-                            }
-                            {/* Price */}
-                            {
-                                [1, 2, 3].map((priceRating) => {
-                                    return (
-                                        <Text
-                                            key={priceRating}
-                                            style={{
-                                                ...FONTS.h3,
-                                                color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
-                                            }}
-                                        >
-                                            $
-                                        </Text>
-                                    )
-                                })
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            )
         }
 
         return (
