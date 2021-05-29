@@ -2,7 +2,7 @@ import React from 'react';
 import {
     SafeAreaView,
     Platform,
-    View, 
+    View,
     Text,
     StyleSheet,
     Animated,
@@ -13,12 +13,13 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import { icons, COLORS, FONTS, SIZES } from '../constants';
 
-const Restaurants = ({route, navigation}) => {
+const Restaurants = ({ route, navigation }) => {
 
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
+    const [photoUrl, setPhotoUrl] = useState();
 
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
@@ -60,10 +61,10 @@ const Restaurants = ({route, navigation}) => {
     }
 
     function getOrderQuantity(id) {
-        let orderItem= orderItems.filter(item => item.menuId == id)
-        if(orderItem.length > 0){
+        let orderItem = orderItems.filter(item => item.menuId == id)
+        if (orderItem.length > 0) {
             return orderItem[0].qty
-        }else{
+        } else {
             return 0;
         }
     }
@@ -73,20 +74,20 @@ const Restaurants = ({route, navigation}) => {
         return itemCount;
     }
 
-    function sumOrder(){
-        let total = orderItems.reduce((a, b)=> a + (b.qty * b.price || 0),0)
+    function sumOrder() {
+        let total = orderItems.reduce((a, b) => a + (b.qty * b.price || 0), 0)
         return total.toFixed(2);
     }
 
-    function renderHeader(){
+    function renderHeader() {
         return (
             <View style={{
-                flexDirection:'row',
-                marginTop: (Platform.OS =="android" ? 30 : 0)
+                flexDirection: 'row',
+                marginTop: (Platform.OS == "android" ? 30 : 0)
             }}>
                 <TouchableOpacity
                     style={{
-                        paddingLeft: SIZES.padding*2,
+                        paddingLeft: SIZES.padding * 2,
                         width: 50,
                         justifyContent: "center",
                         alignItems: "center"
@@ -94,7 +95,7 @@ const Restaurants = ({route, navigation}) => {
                     onPress={() => navigation.goBack()}
                 >
                     <Image
-                        source ={icons.back}
+                        source={icons.back}
                         resizeMode="contain"
                         style={{
                             width: 30,
@@ -114,11 +115,11 @@ const Restaurants = ({route, navigation}) => {
                         height: 50,
                         alignItems: "center",
                         justifyContent: "center",
-                        paddingHorizontal: SIZES.padding*3,
+                        paddingHorizontal: SIZES.padding * 3,
                         borderRadius: SIZES.radius,
                         backgroundColor: COLORS.lightGray3
                     }}>
-                        <Text style={{...FONTS.h3}}>{restaurant?.name}</Text>
+                        <Text style={{ ...FONTS.h3 }}>{restaurant?.name}</Text>
                     </View>
 
                 </View>
@@ -128,7 +129,7 @@ const Restaurants = ({route, navigation}) => {
                     paddingRight: SIZES.padding * 2,
                     justifyContent: "center"
                 }}>
-                    <Image 
+                    <Image
                         source={icons.list}
                         resizeMode="contain"
                         style={{
@@ -142,7 +143,7 @@ const Restaurants = ({route, navigation}) => {
         )
     }
 
-    function renderFoodInfo(){
+    function renderFoodInfo() {
         return (
             <Animated.ScrollView
                 horizontal
@@ -151,19 +152,19 @@ const Restaurants = ({route, navigation}) => {
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
                 onScroll={Animated.event([
-                    { nativeEvent: { contentOffset: { x: scrollX } } } 
+                    { nativeEvent: { contentOffset: { x: scrollX } } }
                 ], { useNativeDriver: false })}
             >
                 {
-                    restaurant?.menu.map((item,index) => (
+                    restaurant?.menu.map((item, index) => (
                         <View
                             key={`menu-${index}`}
                             style={{
                                 alignItems: "center"
                             }}
-                        
+
                         >
-                            <View style={{ height: SIZES.height *0.35}}>
+                            <View style={{ height: SIZES.height * 0.35 }}>
                                 {/* Food Image */}
                                 <Image
                                     source={item.photo}
@@ -175,33 +176,33 @@ const Restaurants = ({route, navigation}) => {
                                 />
                                 <View style={{
                                     position: 'absolute',
-                                    bottom:-20,
+                                    bottom: -20,
                                     width: SIZES.width,
                                     height: 50,
                                     justifyContent: "center",
                                     flexDirection: 'row'
                                 }}>
-                                    <TouchableOpacity 
-                                    onPress={() => editOrder("-", item.menuId, item.price)}   
-                                    style={{
-                                        width: 50,
-                                        backgroundColor: COLORS.white,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderTopLeftRadius: SIZES.radius,
-                                        borderBottomLeftRadius: SIZES.radius
-                                    }}>
-                                        <Text style={{...FONTS.h1}}>-</Text>
+                                    <TouchableOpacity
+                                        onPress={() => editOrder("-", item.menuId, item.price)}
+                                        style={{
+                                            width: 50,
+                                            backgroundColor: COLORS.white,
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            borderTopLeftRadius: SIZES.radius,
+                                            borderBottomLeftRadius: SIZES.radius
+                                        }}>
+                                        <Text style={{ ...FONTS.h1 }}>-</Text>
                                     </TouchableOpacity>
                                     <View style={{
                                         justifyContent: "center",
-                                        alignItems:"center",
+                                        alignItems: "center",
                                         backgroundColor: COLORS.white,
-                                        width:50,
+                                        width: 50,
                                     }}>
-                                        <Text style={{...FONTS.h3}}>{ getOrderQuantity(item.menuId)}</Text>
+                                        <Text style={{ ...FONTS.h3 }}>{getOrderQuantity(item.menuId)}</Text>
                                     </View>
-                                    <TouchableOpacity 
+                                    <TouchableOpacity
                                         style={{
                                             width: 50,
                                             borderTopRightRadius: SIZES.radius,
@@ -211,8 +212,8 @@ const Restaurants = ({route, navigation}) => {
                                             backgroundColor: COLORS.white
                                         }}
                                         onPress={() => editOrder("+", item.menuId, item.price)}
-                                        >
-                                        <Text style={{...FONTS.h1}}>+</Text>
+                                    >
+                                        <Text style={{ ...FONTS.h1 }}>+</Text>
                                     </TouchableOpacity>
 
                                 </View>
@@ -223,15 +224,15 @@ const Restaurants = ({route, navigation}) => {
                                 width: SIZES.width,
                                 alignItems: 'center',
                                 marginTop: 15,
-                                paddingHorizontal: SIZES.padding*2
+                                paddingHorizontal: SIZES.padding * 2
                             }}>
-                                <Text style={{ marginVertical: 10, textAlign: "center",...FONTS.h2}}>{item.name} - {item.price.toFixed(2)}</Text>
-                                <Text style={{...FONTS.body3, textAlign:'center'}}>{item.description}</Text>
+                                <Text style={{ marginVertical: 10, textAlign: "center", ...FONTS.h2 }}>{item.name} - {item.price.toFixed(2)}</Text>
+                                <Text style={{ ...FONTS.body3, textAlign: 'center' }}>{item.description}</Text>
 
                             </View>
 
                             <View style={{
-                                flexDirection:'row',
+                                flexDirection: 'row',
                                 marginTop: 10,
                             }}>
                                 <Image
@@ -240,10 +241,10 @@ const Restaurants = ({route, navigation}) => {
                                     style={{
                                         width: 20,
                                         height: 20,
-                                        marginRight:10
+                                        marginRight: 10
                                     }}
                                 />
-                                <Text style={{...FONTS.body3, color:COLORS.darkgray}}>
+                                <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>
                                     {item.calories.toFixed(2)} Cal
                                 </Text>
                             </View>
@@ -254,7 +255,7 @@ const Restaurants = ({route, navigation}) => {
             </Animated.ScrollView>
         )
     }
-    
+
     function renderDots() {
         const dotPosition = Animated.divide(scrollX, SIZES.width)
 
@@ -267,77 +268,77 @@ const Restaurants = ({route, navigation}) => {
                     height: SIZES.padding
                 }}
             >
-                { 
-                restaurant?.menu.map((item,index) => {
-                    const opacity = dotPosition.interpolate({
-                        inputRange: [index-1, index, index+1],
-                        outputRange: [0.3, 1, 0.3],
-                        extrapolate: "clamp"
-                    });
+                {
+                    restaurant?.menu.map((item, index) => {
+                        const opacity = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [0.3, 1, 0.3],
+                            extrapolate: "clamp"
+                        });
 
-                    const dotSize = dotPosition.interpolate({
-                        inputRange: [index - 1, index, index + 1],
-                        outputRange: [ SIZES.base*0.8, 10, SIZES.base*0.8],
-                        extrapolate: "clamp"
-                    });
+                        const dotSize = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [SIZES.base * 0.8, 10, SIZES.base * 0.8],
+                            extrapolate: "clamp"
+                        });
 
-                    const dotColor = dotPosition.interpolate({
-                        inputRange: [index - 1, index, index + 1],
-                        outputRange: [COLORS.darkgray, COLORS.primary, COLORS.darkgray],
-                        extrapolate: "clamp"
-                    });
+                        const dotColor = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [COLORS.darkgray, COLORS.primary, COLORS.darkgray],
+                            extrapolate: "clamp"
+                        });
 
-                    return (
-                        <Animated.View
-                        key={`dot-${index}`}
-                        opacity={opacity}
-                        style={{
-                            borderRadius: SIZES.radius,
-                            marginHorizontal: 6,
-                            width: dotSize,
-                            height: dotSize,
-                            backgroundColor: dotColor
-                        }}
-                        >
+                        return (
+                            <Animated.View
+                                key={`dot-${index}`}
+                                opacity={opacity}
+                                style={{
+                                    borderRadius: SIZES.radius,
+                                    marginHorizontal: 6,
+                                    width: dotSize,
+                                    height: dotSize,
+                                    backgroundColor: dotColor
+                                }}
+                            >
 
-                        </Animated.View>
-                    )
-                })
+                            </Animated.View>
+                        )
+                    })
                 }
             </View>
         )
     }
-    function renderOrder(){
-        return(
+    function renderOrder() {
+        return (
             <View>
-                { renderDots() }
+                { renderDots()}
                 <View style={{
                     backgroundColor: COLORS.white,
                     borderTopLeftRadius: 40,
                     borderTopRightRadius: 40,
                 }}>
                     <View style={{
-                        flexDirection:"row",
+                        flexDirection: "row",
                         justifyContent: 'space-between',
-                        paddingVertical: SIZES.padding*2, 
-                        paddingHorizontal: SIZES.padding *3,
+                        paddingVertical: SIZES.padding * 2,
+                        paddingHorizontal: SIZES.padding * 3,
                         borderBottomColor: COLORS.lightGray2,
                         borderBottomWidth: 1
                     }}>
-                        <Text style={{...FONTS.h3}}> { getBasketItemCount() } Items in the Cart</Text>
-                        <Text style={{...FONTS.h3}}> ${ sumOrder()}</Text>
+                        <Text style={{ ...FONTS.h3 }}> {getBasketItemCount()} Items in the Cart</Text>
+                        <Text style={{ ...FONTS.h3 }}> ${sumOrder()}</Text>
                     </View>
 
                     <View style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        paddingVertical: SIZES.padding *2,
-                        paddingHorizontal: SIZES.padding *3
+                        paddingVertical: SIZES.padding * 2,
+                        paddingHorizontal: SIZES.padding * 3
                     }}>
                         <View style={{
                             flexDirection: "row"
                         }}>
-                            <Image 
+                            <Image
                                 source={icons.pin}
                                 resizeMode="contain"
                                 style={{
@@ -346,19 +347,19 @@ const Restaurants = ({route, navigation}) => {
                                     tintColor: COLORS.darkgray
                                 }}
                             />
-                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4}} >{currentLocation?.streetName}</Text>
+                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }} >{currentLocation?.streetName}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Image
-                            source={icons.mastercard}
-                            resizeMode="contain"
-                            style={{
-                                width: 20,
-                                height: 20,
-                                tintColor: COLORS.darkgray
-                            }}
-                             />
-                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4}} >8888</Text>
+                                source={icons.mastercard}
+                                resizeMode="contain"
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    tintColor: COLORS.darkgray
+                                }}
+                            />
+                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }} >8888</Text>
                         </View>
                     </View>
 
@@ -369,26 +370,26 @@ const Restaurants = ({route, navigation}) => {
                         justifyContent: "center"
                     }}>
                         <TouchableOpacity
-                            style= {{
-                                width: SIZES.width*0.9,
+                            style={{
+                                width: SIZES.width * 0.9,
                                 padding: SIZES.padding,
                                 backgroundColor: COLORS.primary,
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress = {() => navigation.navigate("OrderDelivery", {
+                            onPress={() => navigation.navigate("OrderDelivery", {
                                 restaurant: restaurant,
                                 currentLocation: currentLocation
                             })}
                         >
-                            <Text style={{ color: COLORS.white,...FONTS.h2}}>Order</Text>
+                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Order</Text>
 
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {
-                    isIphoneX() && 
+                    isIphoneX() &&
                     <View
                         style={{
                             position: "absolute",
@@ -405,9 +406,9 @@ const Restaurants = ({route, navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            { renderHeader() }
-            { renderFoodInfo() }
-            { renderOrder() }
+            { renderHeader()}
+            { renderFoodInfo()}
+            { renderOrder()}
         </SafeAreaView>
     );
 }
